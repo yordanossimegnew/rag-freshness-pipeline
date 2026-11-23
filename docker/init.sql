@@ -1,0 +1,3 @@
+CREATE DATABASE docqa;
+\c docqa
+CREATE EXTENSION IF NOT EXISTS vector;

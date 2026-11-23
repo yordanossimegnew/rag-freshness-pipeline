@@ -1,0 +1,37 @@
+# Run from the folder that contains both repositories:
+#   docker compose -f rag-freshness-pipeline/docker-compose.yml up --build
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_freshness
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      retries: 20
+
+  api:
+    build: {context: .., dockerfile: rag-freshness-pipeline/Dockerfile}
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/rag_freshness
+      INDEX_DATABASE_URL: postgresql://postgres:postgres@db:5432/docqa
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      VOYAGE_API_KEY: ${VOYAGE_API_KEY}
+    depends_on: {db: {condition: service_healthy}}
+    ports: ["8000:8000"]
+
+  ui:
+    build: {context: .., dockerfile: rag-freshness-pipeline/Dockerfile}
+    command: ["streamlit", "run", "ui/app.py", "--server.address", "0.0.0.0"]
+    environment:
+      AGENT_API_URL: http://api:8000
+    depends_on: [api]
+    ports: ["8501:8501"]
+
+volumes:
+  pgdata:
