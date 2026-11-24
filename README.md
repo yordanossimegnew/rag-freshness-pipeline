@@ -1,5 +1,7 @@
 # RAG Freshness Pipeline
 
+[![tests](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml)
+
 Keeps a RAG index in sync with the web. Point it at a sitemap or a list of URLs and it
 re-crawls on a schedule. It uses conditional requests so unchanged pages cost a `304`, and
 **re-embeds only the chunks whose text actually changed**. Pages that disappear are removed.
