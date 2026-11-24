@@ -20,6 +20,7 @@ from tests.site import acme_site  # noqa: E402
 
 STATE_URL = os.getenv("TEST_DATABASE_URL")
 INDEX_URL = os.getenv("TEST_INDEX_DATABASE_URL")
+DOCQA = (ROOT / os.getenv("DOCQA_PATH", "../document-qa-citations")).resolve()  # same rule as the app
 
 
 def _truncate(url: str, tables: str) -> None:
@@ -44,7 +45,7 @@ def settings(tmp_path):
     _truncate(STATE_URL, "sources, pages, page_versions, sync_runs, sync_events, alerts")
     _truncate(INDEX_URL, "documents, chunks")
     return Settings(database_url=STATE_URL, index_database_url=INDEX_URL,
-                    docqa_path=ROOT.parent / "document-qa-citations", chunk_chars=300, chunk_overlap=0,
+                    docqa_path=DOCQA, chunk_chars=300, chunk_overlap=0,
                     per_host_delay=0.0, allow_private_urls=True, scheduler_enabled=False, log_dir=tmp_path)
 
 
