@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import threading
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field, HttpUrl, model_validator
 

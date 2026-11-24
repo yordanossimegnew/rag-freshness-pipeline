@@ -38,8 +38,8 @@ def _label(dt: str | None) -> str:
 
 
 def build_qa_graph(settings: Settings, state: State, index: IndexWriter, embedder: Embedder, answerer: Answerer):
-    from docqa.agent.citations import parse_cited_answer, render_markdown  # loaded by IndexWriter
     from docqa.agent.agent import page_label
+    from docqa.agent.citations import parse_cited_answer, render_markdown  # loaded by IndexWriter
 
     def retrieve(s: QAState) -> dict:
         q = s["question"]

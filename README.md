@@ -1,6 +1,6 @@
 # RAG Freshness Pipeline
 
-[![tests](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml)
+[![tests](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/yordanossimegnew/rag-freshness-pipeline/actions/workflows/tests.yml) ![Python 3.12](https://img.shields.io/badge/python-3.12-blue) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Keeps a RAG index in sync with the web. Point it at a sitemap or a list of URLs and it
 re-crawls on a schedule. It uses conditional requests so unchanged pages cost a `304`, and
@@ -24,6 +24,13 @@ and **LangChain** (`ChatAnthropic` with the Citations API, Voyage embeddings), o
 | Freshness | Change log | Time-aware answer | Sources |
 |---|---|---|---|
 | ![Freshness](docs/screenshots/freshness.png) | ![Change log](docs/screenshots/change-log.png) | ![Ask](docs/screenshots/ask.png) | ![Sources](docs/screenshots/sources.png) |
+
+## Engineering highlights
+
+- Conditional requests (`ETag` / `Last-Modified` → `304`) and content hashing mean unchanged pages cost nearly nothing.
+- A chunk-level diff re-embeds only the chunks whose text changed. Pages that disappear are removed from the index.
+- Staleness SLAs per source, with alerts, and answers that show "as of" dates and warn when a source is stale.
+- Reuses Document QA's parser, chunker and pgvector store, so a refreshed page is indexed exactly like an uploaded one.
 
 ## What a sync does
 

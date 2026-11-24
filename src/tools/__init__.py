@@ -1,4 +1,4 @@
-from .fetcher import FetchResult, Fetcher, discover_sitemap, parse_sitemap
+from .fetcher import Fetcher, FetchResult, discover_sitemap, parse_sitemap
 from .index import IndexWriter, UpsertResult
 from .state import State
 

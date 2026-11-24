@@ -228,7 +228,7 @@ with tab_sources:
                     "error": p["last_error"] or ""} for p in pages]), hide_index=True, use_container_width=True)
                 pick = st.selectbox("Page history", [None] + [p["id"] for p in pages if p["last_changed_at"]],
                                     format_func=lambda pid: "—" if pid is None else
-                                    short(next(p["url"] for p in pages if p["id"] == pid)), key=f"hist{s['id']}")
+                                    short(next(p["url"] for p in pages if p["id"] == pid)), key=f"hist{s['id']}")  # noqa: B023 (used during this call)
                 if pick:
                     for v in api("GET", f"/pages/{pick}")["versions"]:
                         st.markdown(f"**{v['fetched_at'][:19].replace('T', ' ')}** · {v['stats'].get('chunks', 0)} chunks"
